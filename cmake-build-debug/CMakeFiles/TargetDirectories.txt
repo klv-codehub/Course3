@@ -1,0 +1,3 @@
+C:/Users/mi/CLionProjects/Course3/cmake-build-debug/CMakeFiles/Course3.dir
+C:/Users/mi/CLionProjects/Course3/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mi/CLionProjects/Course3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
