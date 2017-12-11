@@ -20,9 +20,11 @@ class Graph {
 
 public:
     Graph(int V);
+    Graph(const Graph &old);
     void addEdge(int v, int w);
     bool topologicalSort();
     void generator();
+    //деструктор
 };
 
 Graph::Graph(int V) {
@@ -86,7 +88,11 @@ bool Graph::topologicalSort() {
             }
     }
 
-    cout << "Following is a Topological Sort of the given graph:\n";
+    cout << "\nFollowing is a Topological Sort of the given graph:\n";
+
+    Graph n(*this);
+
+
     while (!Stack.empty()) {
         cout << Stack.top() << " ";
         Stack.pop();
@@ -96,34 +102,30 @@ bool Graph::topologicalSort() {
 void Graph :: generator ()
 {
     const int PERCENT = 40;
-
     for (int j = 0; j < V; j++)
         for (int k = j + 1; k < V; k++)
             if ( (rand () % 100) < PERCENT) {
                 addEdge(j, k);
             }
-
 }
 
-//void addStringToFile(string str) {
-//    ofstream fout;
-//    fout.open(path);
-//    if (!fout.is_open()) {
-//        cout << "Cannot open the file\n";
-//        exit(1);
-//    }
-//    fout << str;
-//    fout.close();
-//}
+Graph::Graph(const Graph &old) {
+    V = old.V;
+    adj = new list<int>[V];
+    for (int i = 0; i < V; i++) {
+        adj[i] = old.adj[i];
+    }
+}
 
 int main() {
     srand(time(nullptr));
     // Create a graph given in the above diagram
     Graph g(15);
     g.generator();
-
-
     g.topologicalSort();
+
+    Graph n(g);
+    n.topologicalSort();
 
     return 0;
 }
