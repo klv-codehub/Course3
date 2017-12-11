@@ -13,14 +13,21 @@ enum color {
     BLACK
 };
 
+struct node {
+    int num;
+    list<node*> siblings;
+
+};
+
 class Graph {
     int V;
-    list<int> *adj;
+    node *nodeArray;
+//    list<int> *adj;
     bool topologicalSortUtil(int v, int color[], stack<int> &Stack);
 
 public:
     Graph(int V);
-    Graph(const Graph &old);
+//    Graph(const Graph &old);
     void addEdge(int v, int w);
     bool topologicalSort();
     void generator();
@@ -29,7 +36,8 @@ public:
 
 Graph::Graph(int V) {
     this->V = V;
-    adj = new list<int>[V];
+    nodeArray = new node[V];
+//    adj = new list<int>[V];
 
     ofstream fout;
     fout.open(PATH);
@@ -42,7 +50,8 @@ Graph::Graph(int V) {
 }
 
 void Graph::addEdge(int v, int w) {
-    adj[v].push_back(w);
+//    adj[v].push_back(w);
+    nodeArray[v].siblings.push_back(&nodeArray[w]);
 
     ofstream fout;
     fout.open(PATH, ios::in);
@@ -54,18 +63,18 @@ void Graph::addEdge(int v, int w) {
     //добавить строку в файл .dot
 }
 
-bool Graph::topologicalSortUtil(int v, int color[],
-                                stack<int> &Stack) {
+bool Graph::topologicalSortUtil(int v, int color[], stack<int> &Stack) {
     if (color[v] == GREY) {
         cout << "Cycle detected => ";
         return false;
     }
     color[v] = GREY;
 
-    list<int>::iterator i;
-    for (i = adj[v].begin(); i != adj[v].end(); ++i)
-        if (color[*i] != BLACK)
-            if (!topologicalSortUtil(*i, color, Stack)) return false;
+    list<node*>::iterator i;
+    int j = 0;
+    for (i = nodeArray[v].siblings.begin(); i != nodeArray[v].siblings.end(); ++i, ++j)
+        if (color[j] != BLACK)
+            if (!topologicalSortUtil(j, color, Stack)) return false;
 
     color[v] = BLACK;
     Stack.push(v);
@@ -90,9 +99,6 @@ bool Graph::topologicalSort() {
 
     cout << "\nFollowing is a Topological Sort of the given graph:\n";
 
-    Graph n(*this);
-
-
     while (!Stack.empty()) {
         cout << Stack.top() << " ";
         Stack.pop();
@@ -109,13 +115,17 @@ void Graph :: generator ()
             }
 }
 
-Graph::Graph(const Graph &old) {
-    V = old.V;
-    adj = new list<int>[V];
-    for (int i = 0; i < V; i++) {
-        adj[i] = old.adj[i];
-    }
-}
+//Graph::Graph(const Graph &old) {
+//    V = old.V;
+//    nodeArray = new node[V];
+//    for (int i = 0; i < V; i++) {
+//
+//    }
+////    adj = new list<int>[V];
+////    for (int i = 0; i < V; i++) {
+////        adj[i] = old.adj[i];
+////    }
+//}
 
 int main() {
     srand(time(nullptr));
@@ -124,8 +134,8 @@ int main() {
     g.generator();
     g.topologicalSort();
 
-    Graph n(g);
-    n.topologicalSort();
+//    Graph n(g);
+//    n.topologicalSort();
 
     return 0;
 }
