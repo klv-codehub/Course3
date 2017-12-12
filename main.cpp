@@ -16,7 +16,6 @@ enum color {
 struct node {
     int num;
     list<node*> siblings;
-
 };
 
 class Graph {
