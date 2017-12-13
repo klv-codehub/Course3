@@ -105,7 +105,7 @@ bool Graph::topologicalSort() {
     for (int i = 0; i < V; i++) {
         if (color[i] == WHITE)
             if (!topologicalSortUtil(i, color, Stack)) {
-                cout << "Topological sort of the given graph is impossible";
+                cout << "Topological sort of the given graph is impossible\n";
                 while (!Stack.empty()) Stack.pop();
                 return false;
             }
@@ -176,6 +176,7 @@ void Menu() {
     cout << "Press (3) to set edges by yourself" << endl;
     cout << "Press (4) to toposort graph" << endl;
     cout << "Press (5) to test the time of the program" << endl;
+    cout << "Press (6) to delete old graph" << endl;
     cout << "Press (0) to finish the program" << endl;
 }
 
@@ -226,9 +227,10 @@ int main() {
                     break;
                 }
                 cout << "Pressed 4. The graph will be sorted" << endl;
-                g.topologicalSort();
-                g.output("Sorted graph");
-                g.fileOutput();
+                if (g.topologicalSort()) {
+                    g.output("Sorted graph");
+                    g.fileOutput();
+                }
                 break;
             }
             case '5': {
